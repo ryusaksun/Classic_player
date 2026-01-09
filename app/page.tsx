@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import VinylPlayer from '@/components/VinylPlayer';
 import MusicInfo from '@/components/MusicInfo';
-import { useAudioPlayer } from '@/hooks';
+import { useAudioPlayer, useVinylSound } from '@/hooks';
 import { Track, Composer } from '@/types';
 import musicCatalog from '@/data/music-catalog.json';
 import composersData from '@/data/composers.json';
@@ -26,6 +26,14 @@ export default function Home() {
         playPrev,
         setPlaylist,
     } = useAudioPlayer();
+
+    // 集成黑胶底噪和爆豆声效
+    useVinylSound({
+        isPlaying,
+        volume: isMuted ? 0 : volume,
+        noiseGain: 0.05, // 轻微底噪
+        crackleGain: 0.1 // 偶尔爆豆
+    });
 
     const [selectedTrack, setSelectedTrack] = useState<Track | null>(null);
 
